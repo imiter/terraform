@@ -7,10 +7,9 @@ provider "aws" {
 # SG(8080/tcp) 생성
 # EC2(user_data="WEB 서버 설정")
 
-
 # 1) SG(8080/tcp) 생성
 resource "aws_security_group" "mySG" {                   # security_group 생성
-  name        = "allow_80"
+  name        = var.mywebserver_security_group
   description = "Allow 80 inbound traffic and all outbound traffic"
 
   tags = {
@@ -21,9 +20,9 @@ resource "aws_security_group" "mySG" {                   # security_group 생성
 resource "aws_vpc_security_group_ingress_rule" "allow_http_ipv4" {
   security_group_id = aws_security_group.mySG.id
   cidr_ipv4         = "0.0.0.0/0"
-  from_port         = 80
+  from_port         = var.server_port
   ip_protocol       = "tcp"
-  to_port           = 80
+  to_port           = var.server_port
 }
 
 
